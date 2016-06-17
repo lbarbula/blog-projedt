@@ -1,0 +1,18 @@
+<header>
+  <h1>{{title}}</h1>
+  <a href="/users/addUser"><button type="button">Add User</button></a>
+</header>
+
+
+
+    <form action="/addPost" method="post">
+      <input type="text" name="name" placeholder="Enter Name of Blog">
+      <textarea name='body' rows='15'>Write Post Here</textarea>
+      <input type="url" name="image" placeholder="Enter Image URL">
+      <select name="user_id">
+        {{#each users}}
+        <option value="{{this.id}}">{{this.name}}</option>
+        {{/each}}
+      </select>
+      <button type="submit">Create Post</button>
+    </form>

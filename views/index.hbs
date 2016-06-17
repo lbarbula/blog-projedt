@@ -1,2 +1,13 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
+<header>
+  <h1>{{title}}</h1>
+  <a href="/users/addUser"><button type="button">Add User</button></a>
+</header>
+
+<main>
+  <div class="center">
+    <form action="/posts" method="get">
+      <input type="text" name="name" placeholder="Enter Username">
+      <input type="email" name="email" placeholder="Enter Email">
+      <a href="/posts"><button type="button">View Posts</button></a>
+  </div>
+</main>

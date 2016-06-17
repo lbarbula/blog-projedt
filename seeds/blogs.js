@@ -39,28 +39,28 @@ exports.seed = function(knex, Promise) {
             })
         })
         .then(function (users) {
-            return
-            knex('post').select().then(function(posts) {
+            return knex('post').select()
+            .then(function(posts) {
 
-                return Promise.all([
-                    knex('comment').insert({
-                        user_id: findFromList('Laney Jane the Main Frame', users),
-                        post_id: findFromList('Crumpets', posts),
-                        body: 'I think that crumpets are the greatest thing ever! Not english muffins for all you noobs.'
-                    }),
-                    knex('comment').insert({
-                        user_id: findFromList('Danny Fritz', users),
-                        post_id: findFromList('Crumpets', posts),
-                        body: 'I dont need food, im a robot'
-                    })
-                ])
+              return Promise.all([
+                knex('comment').insert({
+                  user_id: findFromList('Laney Jane the Main Frame', users),
+                  post_id: findFromList('Crumpets', posts),
+                  body: 'I think that crumpets are the greatest thing ever! Not english muffins for all you noobs.'
+                }),
+                knex('comment').insert({
+                  user_id: findFromList('Danny Fritz', users),
+                  post_id: findFromList('Crumpets', posts),
+                  body: 'I dont need food, im a robot'
+                })
+              ])
             })
-        })
-};
-function findFromList(name, list) {
-    for (var i = 0; i < list.length; i++) {
-        if (name === list[i].name) {
-            return list[i].id
+          })
+        };
+        function findFromList(name, list) {
+          for (var i = 0; i < list.length; i++) {
+            if (name === list[i].name) {
+              return list[i].id
+            }
+          }
         }
-    }
-}
