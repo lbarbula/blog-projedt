@@ -38,9 +38,21 @@ main {
   margin-bottom: 5px;
   border-radius: 5px;
 }
-.container {
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
+
+}
+.column {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: auto;
+  width: 45%;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin-bottom: 10px;
 }

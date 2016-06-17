@@ -1,11 +1,13 @@
 <h1>{{title}}</h1>
 <a href="/addPost"><button type="button">Add Post</button></a>
 
+<div class="row">
   {{#each data}}
-  <div class="container">
-    <p>{{this.name}}</p>
-    <p>{{this.body}}</p>
-    <p>{{this.name}}</p>
+  <div class="column">
+    <a href="/{{this.id}}">{{this.name}}</a>
     <img src="{{this.image}}">
+    <p>{{this.body}}</p>
+    <p>{{this.UserName}}</p>
   </div>
   {{/each}}
+</div>
