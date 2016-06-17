@@ -8,13 +8,13 @@ exports.up = function(knex, Promise) {
             table.string('name');
             table.text('body');
             table.string('image');
-            table.integer('user_id').unsigned().references('id').inTable('user')
+            table.integer('user_id').unsigned().references('id').inTable('user').onDelete('cascade')
         })
     }).then(function() {
         return knex.schema.createTable('comment', function(table) {
             table.increments();
-            table.integer('user_id').unsigned().references('id').inTable('user');
-            table.integer('post_id').unsigned().references('id').inTable('post');
+            table.integer('user_id').unsigned().references('id').inTable('user').onDelete('cascade');
+            table.integer('post_id').unsigned().references('id').inTable('post').onDelete('cascade');
             table.text('body');
         })
     })
