@@ -1,11 +1,26 @@
 <h1>{{details.name}}</h1>
 
-<p>{{details.body}}</p>
+<p>{{details.postBody}}</p>
 <a href="/{{details.id}}/edit">Edit</a>
 <a href="/{{details.id}}/delete">Delete</a>
 <img src="{{details.image}}">
 Comments:
 <ul>
-<li>{{details.body}}</li>
+
+<li>{{details.commentBody}}</li>
+
 </ul>
-<a href="/{{details.id}}/addComments"><p>Add a Comment</p></a>
+
+<form action="/{{details.id}}" method="post">
+
+  <select name="post_id">
+    <option value="{{details.cpId}}">{{details.UserName}}</option>
+  </select>
+
+  <select name="user_id">
+    <option value="{{details.cuId}}">{{details.id}}</option>
+  </select>
+
+    <textarea name='body' rows='15'>Write comment</textarea>
+    <button type="submit">Create Comment</button>
+</form>

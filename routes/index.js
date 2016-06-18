@@ -10,7 +10,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/posts', function(req, res, next) {
-    knex('post').select('user.name as UserName', 'post.name as name', 'post.body as body', 'post.image as image', 'post.id as id').innerJoin('user', function() {
+    knex('post').select(['user.name as UserName', 'post.name as name', 'post.body as body', 'post.image as image', 'post.id as id'])
+        .join('user', function() {
             this.on('user.id', '=', 'post.user_id')
         })
         .then(function(data) {
@@ -21,13 +22,22 @@ router.get('/posts', function(req, res, next) {
             })
         })
 })
+router.get('/addPost', function(req, res, next){
+knex('user').select()
+.then(function(users){
+  res.render('addPost', {users: users, title: 'hello World'})
+
+  })
+})
 router.get('/:id', function(req, res, next) {
-    knex('post').innerJoin('user', function() {
+    knex('post')
+        .join('user', function() {
             this.on('user.id', '=', 'post.user_id')
         })
         .join('comment', function() {
             this.on('post.id', '=', 'comment.post_id')
-        }).select().where('post.id', req.params.id).first()
+        })
+        .select(['user.name as UserName', 'post.name as name', 'post.body as postBody','comment.body as commentBody', 'post.image as image', 'post.id as id', 'comment.post_id as cpId', 'comment.user_id as cuId']).where({post_id: req.params.id}).first()
         .then(function(details) {
             console.log(details)
             res.render('detail', {
@@ -45,32 +55,19 @@ router.get('/:id/edit', function(req, res, next) {
     })
 })
 router.post('/:id/edit', function(req, res, next) {
-    console.log("here", req.body);
-    knex('post').where('post.id', "=", req.params.id).update(req.body).then(function() {
+    knex('post').where({id: req.params.id}).update(req.body).then(function() {
         res.redirect('/posts')
     })
 })
 
 router.get('/:id/delete', function(req, res, next) {
-    knex('post').where('post.id', req.params.id).del().then(function() {
+    knex('post').where({id: req.params.id}).del().then(function() {
         res.redirect('/posts')
     })
 })
-router.get('/:id/addComments', function(req, res, next) {
-    knex('post').innerJoin('user', function() {
-            this.on('user.id', '=', 'post.user_id')
-        })
-        .join('comment', function() {
-            this.on('post.id', '=', 'comment.post_id')
-        }).select().where('post.id', req.params.id).first()
-        .then(function(details) {
-            console.log(details)
-            res.render('addComments', {
-                title: 'hello world'
-            })
-        })
-})
-router.post('/addComments', function(req, res, next) {
+
+router.post('/:id', function(req, res, next) {
+    console.log(req.body)
     knex('comment').insert(req.body).then(function() {
         res.redirect('/posts')
     }).catch(function(error) {
@@ -79,7 +76,7 @@ router.post('/addComments', function(req, res, next) {
 })
 router.post('/addPost', function(req, res, next) {
     knex('post').insert(req.body).then(function() {
-        res.redirect('/posts')
+        res.redirect('/' + req.params.id)
     }).catch(function(error) {
         next(error)
     })
