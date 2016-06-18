@@ -13,13 +13,15 @@ Comments:
 
 <form action="/{{details.id}}" method="post">
 
-  <select name="post_id">
-    <option value="{{details.cpId}}">{{details.UserName}}</option>
+  <select name="user_id">
+    {{#each names}}
+    <option value="{{this.id}}">{{this.name}}</option>
+    {{/each}}
   </select>
 
-  <select name="user_id">
-    <option value="{{details.cuId}}">{{details.id}}</option>
-  </select>
+    <input type="hidden" name="post_id" value="{{details.cpId}}">
+
+
 
     <textarea name='body' rows='15'>Write comment</textarea>
     <button type="submit">Create Comment</button>

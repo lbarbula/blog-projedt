@@ -30,6 +30,7 @@ knex('user').select()
   })
 })
 router.get('/:id', function(req, res, next) {
+  Promise.all([
     knex('post')
         .join('user', function() {
             this.on('user.id', '=', 'post.user_id')
@@ -37,11 +38,14 @@ router.get('/:id', function(req, res, next) {
         .join('comment', function() {
             this.on('post.id', '=', 'comment.post_id')
         })
-        .select(['user.name as UserName', 'post.name as name', 'post.body as postBody','comment.body as commentBody', 'post.image as image', 'post.id as id', 'comment.post_id as cpId', 'comment.user_id as cuId']).where({post_id: req.params.id}).first()
+        .select(['user.name as userName', 'post.name as name', 'post.body as postBody','comment.body as commentBody', 'post.image as image', 'post.id as id', 'comment.post_id as cpId', 'comment.user_id as cuId']).where({post_id: req.params.id}).first(),
+        knex('user').select()
+        ])
         .then(function(details) {
             console.log(details)
             res.render('detail', {
-                details: details
+                details: details[0],
+                names: details[1]
             })
         })
 })
