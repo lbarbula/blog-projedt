@@ -6,9 +6,9 @@
 <img src="{{details.image}}">
 Comments:
 <ul>
-
-<li>{{details.commentBody}}</li>
-
+{{#each comments}}
+<li>{{this.body}}</li>
+{{/each}}
 </ul>
 
 <form action="/{{details.id}}" method="post">

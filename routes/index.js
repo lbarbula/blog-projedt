@@ -39,13 +39,15 @@ router.get('/:id', function(req, res, next) {
             this.on('post.id', '=', 'comment.post_id')
         })
         .select(['user.name as userName', 'post.name as name', 'post.body as postBody','comment.body as commentBody', 'post.image as image', 'post.id as id', 'comment.post_id as cpId', 'comment.user_id as cuId']).where({post_id: req.params.id}).first(),
-        knex('user').select()
+        knex('user').select(),
+        knex('comment').select().where({post_id: req.params.id})
         ])
         .then(function(details) {
             console.log(details)
             res.render('detail', {
                 details: details[0],
-                names: details[1]
+                names: details[1],
+                comments: details[2]
             })
         })
 })
