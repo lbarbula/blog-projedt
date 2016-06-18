@@ -1,8 +1,9 @@
 <h1>{{details.name}}</h1>
 
 <p>{{details.postBody}}</p>
-<a href="/{{details.id}}/edit">Edit</a>
-<a href="/{{details.id}}/delete">Delete</a>
+<p>{{details.userName}}</p>
+<a href="/{{details.postId}}/edit">Edit</a>
+<a href="/{{details.postId}}/delete">Delete</a>
 <img src="{{details.image}}">
 Comments:
 <ul>
@@ -11,7 +12,7 @@ Comments:
 {{/each}}
 </ul>
 
-<form action="/{{details.id}}" method="post">
+<form action="/{{details.postId}}" method="post">
 
   <select name="user_id">
     {{#each names}}

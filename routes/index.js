@@ -30,44 +30,47 @@ knex('user').select()
   })
 })
 router.get('/:id', function(req, res, next) {
-  Promise.all([
+  return Promise.all([
     knex('post')
         .join('user', function() {
             this.on('user.id', '=', 'post.user_id')
-        })
+        }).select(['post.name as name','user.name as userName', 'post.body as postBody', 'post.id as postId', 'user.id as userId', 'post.image as image']).where('post.id', req.params.id).first(),
+        knex('user')
         .join('comment', function() {
-            this.on('post.id', '=', 'comment.post_id')
+            this.on('user.id', '=', 'comment.user_id')
         })
-        .select(['user.name as userName', 'post.name as name', 'post.body as postBody','comment.body as commentBody', 'post.image as image', 'post.id as id', 'comment.post_id as cpId', 'comment.user_id as cuId']).where({post_id: req.params.id}).first(),
+        .select('comment.id as id', 'user.id as cuId').where({post_id: req.params.id}).first(),
         knex('user').select(),
         knex('comment').select().where({post_id: req.params.id})
-        ])
+      ])
         .then(function(details) {
             console.log(details)
             res.render('detail', {
                 details: details[0],
-                names: details[1],
-                comments: details[2]
+                expanded: details[1],
+                names: details[2],
+                comments: details[3]
             })
+        }).catch(function(error){
+          next(error)
         })
 })
 router.get('/:id/edit', function(req, res, next) {
-    knex('post').where({
-        id: req.params.id
-    }).first().then(function(data) {
+    knex('post').where('post.id', req.params.id
+  ).first().then(function(data) {
         res.render('edit', {
             data: data
         })
     })
 })
 router.post('/:id/edit', function(req, res, next) {
-    knex('post').where({id: req.params.id}).update(req.body).then(function() {
+    knex('post').where('post.id', req.params.id).update(req.body).then(function() {
         res.redirect('/posts')
     })
 })
 
 router.get('/:id/delete', function(req, res, next) {
-    knex('post').where({id: req.params.id}).del().then(function() {
+    knex('post').where('post.id', req.params.id).del().then(function() {
         res.redirect('/posts')
     })
 })
