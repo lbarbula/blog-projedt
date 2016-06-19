@@ -15,13 +15,13 @@ router.get('/posts', function(req, res, next) {
             this.on('user.id', '=', 'post.user_id')
         })
         .then(function(data) {
-            console.log(data)
             res.render('posts', {
                 title: 'Hello World',
                 data: data
             })
         })
 })
+
 router.get('/addPost', function(req, res, next){
 knex('user').select()
 .then(function(users){
@@ -29,6 +29,15 @@ knex('user').select()
 
   })
 })
+
+router.post('/addPost', function(req, res, next) {
+    knex('post').insert(req.body).then(function() {
+        res.redirect('/posts')
+    }).catch(function(error) {
+        next(error)
+    })
+})
+
 router.get('/:id', function(req, res, next) {
   return Promise.all([
     knex('post')
@@ -39,7 +48,7 @@ router.get('/:id', function(req, res, next) {
         .join('comment', function() {
             this.on('user.id', '=', 'comment.user_id')
         })
-        .select('comment.id as id', 'user.id as cuId').where({post_id: req.params.id}).first(),
+        .select().where({post_id: req.params.id}).first(),
         knex('user').select(),
         knex('comment').select().where({post_id: req.params.id})
       ])
@@ -55,6 +64,7 @@ router.get('/:id', function(req, res, next) {
           next(error)
         })
 })
+
 router.get('/:id/edit', function(req, res, next) {
     knex('post').where('post.id', req.params.id
   ).first().then(function(data) {
@@ -63,6 +73,7 @@ router.get('/:id/edit', function(req, res, next) {
         })
     })
 })
+
 router.post('/:id/edit', function(req, res, next) {
     knex('post').where('post.id', req.params.id).update(req.body).then(function() {
         res.redirect('/posts')
@@ -76,18 +87,11 @@ router.get('/:id/delete', function(req, res, next) {
 })
 
 router.post('/:id', function(req, res, next) {
-    console.log(req.body)
     knex('comment').insert(req.body).then(function() {
         res.redirect('/posts')
     }).catch(function(error) {
         next(error)
     })
 })
-router.post('/addPost', function(req, res, next) {
-    knex('post').insert(req.body).then(function() {
-        res.redirect('/' + req.params.id)
-    }).catch(function(error) {
-        next(error)
-    })
-})
+
 module.exports = router;
