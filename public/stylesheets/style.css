@@ -56,3 +56,6 @@ main {
   border-radius: 5px;
   margin-bottom: 10px;
 }
+textarea {
+  border-radius: 5px;
+}

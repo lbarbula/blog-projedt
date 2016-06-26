@@ -16,7 +16,7 @@ router.get('/posts', function(req, res, next) {
         })
         .then(function(data) {
             res.render('posts', {
-                title: 'Hello World',
+                title: 'Bollocks and Other Subjects',
                 data: data
             })
         })
@@ -25,7 +25,7 @@ router.get('/posts', function(req, res, next) {
 router.get('/addPost', function(req, res, next){
 knex('user').select()
 .then(function(users){
-  res.render('addPost', {users: users, title: 'hello World'})
+  res.render('addPost', {users: users, title: 'Add your Bollocks On'})
 
   })
 })

@@ -13,9 +13,9 @@ router.get('/adduser', function(req, res, next){
   res.render('addUser', {title: 'hello world'})
 })
 
-router.post('/', function(req, res, next){
+router.post('/addUser', function(req, res, next){
   knex('user').insert(req.body).then(function(){
-    res.redirect('/users')
+    res.redirect('/')
   }).catch(function(error){
     next(error)
   })
